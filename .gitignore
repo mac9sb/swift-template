@@ -1,0 +1,6 @@
+.DS_Store
+xcuserdata/
+*.xcodeproj/xcuserdata/
+DerivedData/
+.build/
+*.resolved
