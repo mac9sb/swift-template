@@ -7,7 +7,7 @@ struct AuthView: View {
     @State private var email = ""
     @State private var phase: Phase = .idle
 
-    private let auth = AuthService(client: APIClient(baseURL: Config.baseURL))
+    private var auth: AuthService { AuthService(client: session.client) }
 
     enum Phase {
         case idle, sending, sent, error(String)

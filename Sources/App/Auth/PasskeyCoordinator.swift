@@ -70,10 +70,7 @@ final class PasskeyCoordinator: NSObject, ASAuthorizationControllerDelegate,
                 userHandle: credential.userID?.base64URLEncodedString()
             )
         )
-        continuation?.resume(returning: AssertionResult(
-            challengeId: challengeId,
-            response: response
-        ))
+        continuation?.resume(returning: AssertionResult(challengeId: challengeId, response: response))
         continuation = nil
     }
 
@@ -94,26 +91,7 @@ final class PasskeyCoordinator: NSObject, ASAuthorizationControllerDelegate,
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow } ?? ASPresentationAnchor()
-    }
-}
-
-// MARK: - Base64URL helpers
-
-private extension Data {
-    init?(base64URLEncoded string: String) {
-        var base64 = string
-            .replacingOccurrences(of: "-", with: "+")
-            .replacingOccurrences(of: "_", with: "/")
-        while base64.count % 4 != 0 { base64 += "=" }
-        self.init(base64Encoded: base64)
-    }
-
-    func base64URLEncodedString() -> String {
-        base64EncodedString()
-            .replacingOccurrences(of: "+", with: "-")
-            .replacingOccurrences(of: "/", with: "_")
-            .replacingOccurrences(of: "=", with: "")
+            .compactMap { $0.keyWindow }
+            .first ?? ASPresentationAnchor()
     }
 }
